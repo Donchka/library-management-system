@@ -1,0 +1,64 @@
+{% extends 'library/base.html' %}
+
+{% block title %}My Loans - Library Management System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">My Loans</h2>
+
+    {% if loans %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Book</th>
+                        <th>Author</th>
+                        <th>Loan Date</th>
+                        <th>Due Date</th>
+                        <th>Return Date</th>
+                        <th>Fine</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for loan in loans %}
+                        <tr>
+                            <td>{{ loan.book.title }}</td>
+                            <td>{{ loan.book.author }}</td>
+                            <td>{{ loan.loan_date }}</td>
+                            <td>{{ loan.due_date }}</td>
+                            <td>
+                                {% if loan.return_date %}
+                                    {{ loan.return_date }}
+                                {% else %}
+                                    <span class="text-danger">Not returned</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if loan.fine > 0 %}
+                                    <span class="text-danger">${{ loan.fine }}</span>
+                                {% else %}
+                                    $0.00
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not loan.return_date %}
+                                    <a href="{% url 'return_book' loan.loan_id %}" class="btn btn-sm btn-primary">Return</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            You haven't borrowed any books yet.
+        </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="{% url 'book_list' %}" class="btn btn-primary">Browse Books</a>
+    </div>
+</div>
+{% endblock %} 

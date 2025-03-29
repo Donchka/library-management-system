@@ -1,0 +1,97 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Welcome to Library Management System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 mb-4">Welcome to Library Management System</h1>
+            <p class="lead mb-4">Your one-stop solution for managing library operations efficiently.</p>
+            
+            {% if not request.session.is_authenticated %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">New Member?</h5>
+                                <p class="card-text">Join our library community and start borrowing books today!</p>
+                                <a href="{% url 'register' %}" class="btn btn-primary">Register Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Existing Member?</h5>
+                                <p class="card-text">Login to access your account and manage your loans.</p>
+                                <a href="{% url 'login' %}" class="btn btn-success">Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Browse Books</h5>
+                                <p class="card-text">Explore our collection of books.</p>
+                                <a href="{% url 'book_list' %}" class="btn btn-primary">View Books</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">My Loans</h5>
+                                <p class="card-text">View and manage your current loans.</p>
+                                <a href="{% url 'my_loans' %}" class="btn btn-info">View Loans</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">My Reservations</h5>
+                                <p class="card-text">Check your book reservations.</p>
+                                <a href="{% url 'my_reservations' %}" class="btn btn-warning">View Reservations</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Search Books</h5>
+                            <p class="card-text">Find books by title, author, or ISBN.</p>
+                            <a href="{% url 'book_list' %}" class="btn btn-outline-primary">Search</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Borrow Books</h5>
+                            <p class="card-text">Borrow books for up to 14 days.</p>
+                            <a href="{% url 'book_list' %}" class="btn btn-outline-success">Borrow</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Reserve Books</h5>
+                            <p class="card-text">Reserve books that are currently borrowed.</p>
+                            <a href="{% url 'book_list' %}" class="btn btn-outline-info">Reserve</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
