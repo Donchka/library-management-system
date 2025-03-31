@@ -10,7 +10,7 @@ class MemberBackend(BaseBackend):
             # Create a temporary User object to integrate with Django's auth system
             user = User(
                 id=member.member_id,
-                username=member.email,
+                username=member.first_name+" "+member.last_name,
                 first_name=member.first_name,
                 last_name=member.last_name,
                 email=member.email,
@@ -25,7 +25,7 @@ class MemberBackend(BaseBackend):
             member = Member.objects.get(member_id=user_id)
             user = User(
                 id=member.member_id,
-                username=member.email,
+                username=member.first_name+" "+member.last_name,
                 first_name=member.first_name,
                 last_name=member.last_name,
                 email=member.email,

@@ -30,6 +30,36 @@
                         </div>
                     </div>
                 </div>
+            {% elif request.session.is_authenticated and request.session.is_staff %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Browse Books</h5>
+                                <p class="card-text">Explore our collection of books.</p>
+                                <a href="{% url 'book_list' %}" class="btn btn-primary">View Books</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Manage Loans</h5>
+                                <p class="card-text">View and manage all member's loans.</p>
+                                <a href="{% url 'manage_loans' %}" class="btn btn-info">View Loans</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Manage Reservations</h5>
+                                <p class="card-text">Check all member's reservations.</p>
+                                <a href="{% url 'manage_reservations' %}" class="btn btn-warning">View Reservations</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             {% else %}
                 <div class="row">
                     <div class="col-md-4">
@@ -72,6 +102,18 @@
                         </div>
                     </div>
                 </div>
+                {% if request.session.is_admin %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Manage Staffs</h5>
+                            <p class="card-text">View and manage your staff members.</p>
+                            <a href="{% url 'manage_staff' %}" class="btn btn-outline-primary">Manage</a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if not request.session.is_staff %}
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
@@ -90,6 +132,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

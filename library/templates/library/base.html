@@ -31,19 +31,26 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'book_list' %}">Books</a>
                     </li>
-                    {% if request.session.is_authenticated %}
+                    {% if request.session.is_authenticated and not request.session.is_staff %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'my_loans' %}">My Loans</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'my_reservations' %}">My Reservations</a>
                         </li>
+                    {% elif request.session.is_authenticated%}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'manage_loans' %}">Manage Loans</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'manage_reservations' %}">Manage Reservations</a>
+                        </li>
                     {% endif %}
                 </ul>
                 <ul class="navbar-nav">
                     {% if request.session.is_authenticated %}
                         <li class="nav-item">
-                            <span class="nav-link">Welcome, {{ user.username }}</span>
+                            <span class="nav-link">Welcome, {{ request.session.user_name }}</span>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
