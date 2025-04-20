@@ -1,3 +1,4 @@
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -7,6 +8,7 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 from django.http import HttpResponseForbidden
 from .decorators import login_required_custom
+import bcrypt
 
 def home(request):
     return render(request, 'library/home.html')
@@ -28,7 +30,7 @@ def register(request):
             first_name=first_name,
             last_name=last_name,
             email=email,
-            credential=password,  # In production, use proper password hashing
+            credential=bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode(),  # In production, use proper password hashing
             address=address,
             contact=contact,
             date_joined=datetime.now().date()
@@ -45,7 +47,10 @@ def login_view(request):
 
         if 'staffLogin' in request.POST:
             try:
-                staff = Staff.objects.get(email=email, credential=password)
+                staff = Staff.objects.get(email=email)
+                if not bcrypt.checkpw(password.encode('utf-8'),staff.credential.encode('utf-8')):
+                    messages.error(request, 'Invalid credentials')
+                    return render(request, 'library/login.html')
                 # Store the member ID in the session
                 request.session['staff_id'] = staff.staff_id
                 request.session['is_authenticated'] = True  # Custom flag for authentication
@@ -61,7 +66,10 @@ def login_view(request):
         else:
             try:
                 # Authenticate the user manually
-                member = Member.objects.get(email=email, credential=password)
+                member = Member.objects.get(email=email)
+                if not bcrypt.checkpw(password.encode('utf-8'),member.credential.encode('utf-8')):
+                    messages.error(request, 'Invalid credentials')
+                    return render(request, 'library/login.html')
                 # Store the member ID in the session
                 request.session['member_id'] = member.member_id
                 request.session['is_authenticated'] = True  # Custom flag for authentication
@@ -305,6 +313,22 @@ def manage_reservations(request):
     return render(request, 'library/manage_reservations.html', {'reservations': reservations})
 
 @login_required_custom
+def manage_members(request):
+    members = Member.objects.all()
+    return render(request, 'library/manage_members.html', {'members': members})
+
+@login_required_custom
+def remove_member(request, member_id):
+    member = get_object_or_404(Member, member_id=member_id)
+
+    if Reservation.objects.filter(member=member, status='pending').exists() or Loan.objects.filter(member=member).exclude(return_date__isnull=False).exists():
+        messages.error(request, f'Unable to remove {member.first_name + " " + member.last_name} since there are pending book loans or reservation for this member')
+        return redirect('manage_members')
+    member.delete()
+    messages.success(request, f'Successfully removed {member.first_name + " " + member.last_name}')
+    return redirect('manage_members')
+
+@login_required_custom
 def manage_staff(request):
     staffs = Staff.objects.all()
     return render(request, 'library/manage_staffs.html', {'staffs': staffs})
@@ -323,7 +347,7 @@ def register_staff(request):
             first_name=first_name,
             last_name=last_name,
             role=role,
-            credential=password,
+            credential=bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode(),
             contact=contact,
             email=email
         )

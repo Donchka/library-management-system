@@ -34,7 +34,9 @@
                             <td>
                                 {% if reservation.status == 'pending' and reservation.book.availability > 0 %}
                                     <a href="{% url 'fulfill_reservation' reservation.reservation_id %}" class="btn btn-sm btn-primary">Borrow Now</a>
-                                    <a href="{% url 'cancel_reservation' reservation.reservation_id %}" class="btn btn-sm btn-primary">Cancel</a>
+                                {% endif %}
+                                {% if reservation.status == 'pending' %}
+                                 <a href="{% url 'cancel_reservation' reservation.reservation_id %}" class="btn btn-sm btn-primary">Cancel</a>
                                 {% endif %}
                             </td>
                         </tr>

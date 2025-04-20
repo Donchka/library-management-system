@@ -16,7 +16,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">New Member?</h5>
                                 <p class="card-text">Join our library community and start borrowing books today!</p>
-                                <a href="{% url 'register' %}" class="btn btn-primary">Register Now</a>
+                                <a href="{% url 'register' %}" class="btn btn-outline-primary">Register Now</a>
                             </div>
                         </div>
                     </div>
@@ -25,7 +25,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Existing Member?</h5>
                                 <p class="card-text">Login to access your account and manage your loans.</p>
-                                <a href="{% url 'login' %}" class="btn btn-success">Login</a>
+                                <a href="{% url 'login' %}" class="btn btn-outline-success">Login</a>
                             </div>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Browse Books</h5>
                                 <p class="card-text">Explore our collection of books.</p>
-                                <a href="{% url 'book_list' %}" class="btn btn-primary">View Books</a>
+                                <a href="{% url 'book_list' %}" class="btn btn-outline-primary">View Books</a>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Manage Loans</h5>
                                 <p class="card-text">View and manage all member's loans.</p>
-                                <a href="{% url 'manage_loans' %}" class="btn btn-info">View Loans</a>
+                                <a href="{% url 'manage_loans' %}" class="btn btn-outline-info">View Loans</a>
                             </div>
                         </div>
                     </div>
@@ -55,7 +55,16 @@
                             <div class="card-body">
                                 <h5 class="card-title">Manage Reservations</h5>
                                 <p class="card-text">Check all member's reservations.</p>
-                                <a href="{% url 'manage_reservations' %}" class="btn btn-warning">View Reservations</a>
+                                <a href="{% url 'manage_reservations' %}" class="btn btn-outline-warning">View Reservations</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Manage Members</h5>
+                                <p class="card-text">View and manage all enrolled members.</p>
+                                <a href="{% url 'manage_members' %}" class="btn btn-outline-primary">Manage</a>
                             </div>
                         </div>
                     </div>
@@ -67,7 +76,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Browse Books</h5>
                                 <p class="card-text">Explore our collection of books.</p>
-                                <a href="{% url 'book_list' %}" class="btn btn-primary">View Books</a>
+                                <a href="{% url 'book_list' %}" class="btn btn-outline-primary">View Books</a>
                             </div>
                         </div>
                     </div>
@@ -76,7 +85,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">My Loans</h5>
                                 <p class="card-text">View and manage your current loans.</p>
-                                <a href="{% url 'my_loans' %}" class="btn btn-info">View Loans</a>
+                                <a href="{% url 'my_loans' %}" class="btn btn-outline-info">View Loans</a>
                             </div>
                         </div>
                     </div>
@@ -85,7 +94,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">My Reservations</h5>
                                 <p class="card-text">Check your book reservations.</p>
-                                <a href="{% url 'my_reservations' %}" class="btn btn-warning">View Reservations</a>
+                                <a href="{% url 'my_reservations' %}" class="btn btn-outline-warning">View Reservations</a>
                             </div>
                         </div>
                     </div>
@@ -93,15 +102,15 @@
             {% endif %}
             
             <div class="row mt-4">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Search Books</h5>
-                            <p class="card-text">Find books by title, author, or ISBN.</p>
-                            <a href="{% url 'book_list' %}" class="btn btn-outline-primary">Search</a>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="col-md-4">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title">Search Books</h5>-->
+<!--                            <p class="card-text">Find books by title, author, or ISBN.</p>-->
+<!--                            <a href="{% url 'book_list' %}" class="btn btn-outline-primary">Search</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
                 {% if request.session.is_admin %}
                 <div class="col-md-4">
                     <div class="card">

@@ -1,0 +1,50 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Manage Members - Library Management System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Manage Members</h2>
+
+    {% if members %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Member ID</th>
+                        <th>Member Name</th>
+                        <th>Member Contact</th>
+                        <th>Member Email</th>
+                        <th>Address</th>
+                        <th>Date Joined</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                        <tr>
+                            <td>{{ member.member_id }}</td>
+                            <td>{{ member.first_name|add:" " |add:member.last_name }}</td>
+                            <td>{{ member.contact }}</td>
+                            <td>{{ member.email }}</td>
+                            <td>{{ member.address }}</td>
+                            <td>{{ member.date_joined }}</td>
+                            <td>
+                                <a href="{% url 'manage_members_remove' member.member_id %}" class="btn btn-sm btn-danger">Remove</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            No registered members yet.
+        </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="{% url 'register' %}" class="btn btn-primary">Register New Member</a>
+    </div>
+</div>
+{% endblock %} 

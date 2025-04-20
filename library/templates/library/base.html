@@ -45,6 +45,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'manage_reservations' %}">Manage Reservations</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'manage_members' %}">Manage Members</a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.is_authenticated and request.session.is_admin %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'manage_staff' %}">Manage Staffs</a>
+                        </li>
                     {% endif %}
                 </ul>
                 <ul class="navbar-nav">
