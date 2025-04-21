@@ -45,6 +45,9 @@ def register(request):
             contact=contact,
             date_joined=datetime.now().date()
         )
+        if request.session.get('is_authenticated'):
+            messages.success(request, 'Registration successful')
+            return redirect('manage_members')
         messages.success(request, 'Registration successful. Please login.')
         return redirect('login')
     
@@ -209,6 +212,11 @@ def delete_book(request, book_id):
     Handles deletion of books from the library.
     """
     book = get_object_or_404(Book, book_id=book_id)
+
+    if Loan.objects.filter(book=book).exclude(return_date__isnull=False).exists():
+        messages.error(request, f'Unable to remove the book {book.title} since there are pending book loans')
+        return redirect('book_list')
+
     book.delete()
     messages.success(request, f'Successfully removed {book.title}')
     return redirect('book_list')
