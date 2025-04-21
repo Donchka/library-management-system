@@ -3,9 +3,10 @@ This module contains the custom authentication backend for library members.
 """
 
 from django.contrib.auth.backends import BaseBackend
-from django.contrib.auth.models import AnonymousUser
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AnonymousUser, User
+
 from .models import Member
+
 
 class MemberBackend(BaseBackend):
     """

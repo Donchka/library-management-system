@@ -1,9 +1,10 @@
-from django.db import models
-
 """
 This module defines the database models for the library management system.
 Each model represents a table in the database and defines the structure of the data.
 """
+
+from django.db import models
+
 
 class Member(models.Model):
     """

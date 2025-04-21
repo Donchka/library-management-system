@@ -1,14 +1,15 @@
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, authenticate
-from django.contrib import messages
-from django.db.models import Q
-from .models import Member, Book, Loan, Reservation, Staff
 from datetime import datetime, timedelta
 from decimal import Decimal
-from django.http import HttpResponseForbidden
-from .decorators import login_required_custom
+
 import bcrypt
+from django.contrib import messages
+from django.db.models import Q
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect, render
+
+from .decorators import login_required_custom
+from .models import Book, Loan, Member, Reservation, Staff
+
 
 def home(request):
     """
