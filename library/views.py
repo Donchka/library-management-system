@@ -21,10 +21,12 @@ def register(request):
         password = request.POST.get('password')
         address = request.POST.get('address')
         contact = request.POST.get('contact')
+        register_member_status = {}
 
         if Member.objects.filter(email=email).exists():
-            messages.error(request, 'Email already exists')
-            return redirect('register')
+            #messages.error(request, 'Email already exists')
+            register_member_status['register_member_failed'] = True
+            return render(request, 'library/register.html', register_member_status)
 
         member = Member.objects.create(
             first_name=first_name,
@@ -44,13 +46,15 @@ def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
+        login_status = {}
 
         if 'staffLogin' in request.POST:
             try:
                 staff = Staff.objects.get(email=email)
                 if not bcrypt.checkpw(password.encode('utf-8'),staff.credential.encode('utf-8')):
-                    messages.error(request, 'Invalid credentials')
-                    return render(request, 'library/login.html')
+                    #messages.error(request, 'Invalid credentials')
+                    login_status['login_failed'] = True
+                    return render(request, 'library/login.html', login_status)
                 # Store the member ID in the session
                 request.session['staff_id'] = staff.staff_id
                 request.session['is_authenticated'] = True  # Custom flag for authentication
@@ -62,14 +66,17 @@ def login_view(request):
                 messages.success(request, 'Login successful')
                 return redirect('home')
             except Staff.DoesNotExist:
-                messages.error(request, 'Invalid credentials')
+                #messages.error(request, 'Invalid credentials')
+                login_status['login_failed'] = True
+                return render(request, 'library/login.html', login_status)
         else:
             try:
                 # Authenticate the user manually
                 member = Member.objects.get(email=email)
                 if not bcrypt.checkpw(password.encode('utf-8'),member.credential.encode('utf-8')):
-                    messages.error(request, 'Invalid credentials')
-                    return render(request, 'library/login.html')
+                    #messages.error(request, 'Invalid credentials')
+                    login_status['login_failed'] = True
+                    return render(request, 'library/login.html', login_status)
                 # Store the member ID in the session
                 request.session['member_id'] = member.member_id
                 request.session['is_authenticated'] = True  # Custom flag for authentication
@@ -79,7 +86,8 @@ def login_view(request):
                 messages.success(request, 'Login successful')
                 return redirect('home')
             except Member.DoesNotExist:
-                messages.error(request, 'Invalid credentials')
+                login_status['login_failed'] = True
+                return render(request, 'library/login.html', login_status)
 
     return render(request, 'library/login.html')
 
@@ -143,6 +151,9 @@ def add_book(request):
 
         if not ISBN.isnumeric():
             messages.error(request, 'Invalid ISBN')
+            return redirect('book_list')
+        elif not year.isnumeric():
+            messages.error(request, 'Invalid year of publish')
             return redirect('book_list')
         elif Book.objects.filter(isbn=ISBN).exists():
             messages.error(request, 'The book with this ISBN already exist')
@@ -286,7 +297,7 @@ def reserve_book(request, book_id):
     if Reservation.objects.filter(book=book, member=member, status='pending').exists():
         messages.error(request, 'You have already reserved this book')
         return redirect('book_list')
-    
+
     Reservation.objects.create(
         member=member,
         book=book,
@@ -342,6 +353,10 @@ def register_staff(request):
         role = request.POST.get('staffRole')
         contact = request.POST.get('staffContact')
         email = request.POST.get('staffEmail')
+
+        if Staff.objects.filter(email=email).exists():
+            messages.error(request, 'Staff member with this email already exists')
+            return redirect('manage_staff')
 
         Staff.objects.create(
             first_name=first_name,

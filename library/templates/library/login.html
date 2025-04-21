@@ -1,17 +1,7 @@
 {% extends 'library/base.html' %}
 
 {% block title %}Login - Library Management System{% endblock %}
-<!--{% load static %}-->
-<!--<style>-->
-<!--        body {-->
-<!--            background-image: url("{% static 'library/static/library/library_bg.jpg' %}");-->
-<!--            background-size: cover;-->
-<!--            background-repeat: no-repeat;-->
-<!--            background-position: center center;-->
-<!--            height: 100vh;-->
-<!--            margin: 0;-->
-<!--        }-->
-<!--</style>-->
+
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
@@ -47,4 +37,28 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="loginFailedModal" tabindex="-1" aria-labelledby="loginFailedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="loginFailedLabel">Login Failed</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Incorrect email or password. Please try again.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Okay</button>
+                </div>
+            </div>
+        </div>
+</div>
+{% if login_failed %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginFailedModal = new bootstrap.Modal(document.getElementById('loginFailedModal'));
+            loginFailedModal.show();
+        });
+    </script>
+{% endif %}
 {% endblock %} 

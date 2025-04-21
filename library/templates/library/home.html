@@ -68,6 +68,17 @@
                             </div>
                         </div>
                     </div>
+                    {% if request.session.is_admin %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Manage Staffs</h5>
+                                <p class="card-text">View and manage your staff members.</p>
+                                <a href="{% url 'manage_staff' %}" class="btn btn-outline-primary">Manage</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             {% else %}
                 <div class="row">
@@ -111,17 +122,6 @@
 <!--                        </div>-->
 <!--                    </div>-->
 <!--                </div>-->
-                {% if request.session.is_admin %}
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Manage Staffs</h5>
-                            <p class="card-text">View and manage your staff members.</p>
-                            <a href="{% url 'manage_staff' %}" class="btn btn-outline-primary">Manage</a>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
                 {% if not request.session.is_staff %}
                 <div class="col-md-4">
                     <div class="card">

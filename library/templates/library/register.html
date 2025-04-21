@@ -49,4 +49,28 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="registerMemberFailedModal" tabindex="-1" aria-labelledby="registerMemberFailedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="registerMemberFailedLabel">Register Failed</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    A member with this email already exists. Please try again.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Okay</button>
+                </div>
+            </div>
+        </div>
+</div>
+{% if register_member_failed %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const registerMemberFailedModal = new bootstrap.Modal(document.getElementById('registerMemberFailedModal'));
+            registerMemberFailedModal.show();
+        });
+    </script>
+{% endif %}
 {% endblock %} 
