@@ -41,9 +41,11 @@
                             <button type="submit" class="btn btn-primary">Register</button>
                         </div>
                     </form>
+                    {% if not request.session.is_authenticated %}
                     <div class="text-center mt-3">
                         <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
