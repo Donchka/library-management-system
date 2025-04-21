@@ -1,10 +1,22 @@
+"""
+This module contains the custom authentication backend for library members.
+"""
+
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth.models import User
 from .models import Member
 
 class MemberBackend(BaseBackend):
+    """
+    Custom authentication backend for library members.
+    This backend handles authentication for library members using their email and password.
+    """
+    
     def authenticate(self, request, email=None, password=None, **kwargs):
+        """
+        Authenticates a member using their email and password.
+        """
         try:
             member = Member.objects.get(email=email, credential=password)
             # Create a temporary User object to integrate with Django's auth system
@@ -21,6 +33,9 @@ class MemberBackend(BaseBackend):
             return None
 
     def get_user(self, user_id):
+        """
+        Retrieves a user by their ID.
+        """
         try:
             member = Member.objects.get(member_id=user_id)
             user = User(

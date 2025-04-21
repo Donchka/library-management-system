@@ -1,3 +1,7 @@
+"""
+This module contains the admin configuration for the library management system.
+"""
+
 from django.contrib import admin
 from .models import Member, Book, Loan, Reservation, Staff
 

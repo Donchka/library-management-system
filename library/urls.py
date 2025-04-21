@@ -1,3 +1,7 @@
+"""
+URL configuration for the library management system.
+"""
+
 from django.urls import path
 from . import views
 
