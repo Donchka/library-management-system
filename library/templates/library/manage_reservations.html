@@ -1,16 +1,20 @@
 {% extends 'library/base.html' %}
 
-{% block title %}My Reservations - Library Management System{% endblock %}
+{% block title %}Manage Reservations - Library Management System{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h2 class="mb-4">My Reservations</h2>
+    <h2 class="mb-4">Manage Reservations</h2>
 
     {% if reservations %}
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>Member ID</th>
+                        <th>Member Name</th>
+                        <th>Member Contact</th>
+                        <th>Member Email</th>
                         <th>Book</th>
                         <th>Author</th>
                         <th>Reservation Date</th>
@@ -22,6 +26,10 @@
                 <tbody>
                     {% for reservation in reservations %}
                         <tr>
+                            <td>{{ reservation.member.member_id }}</td>
+                            <td>{{ reservation.member.first_name|add:" " |add:reservation.member.last_name }}</td>
+                            <td>{{ reservation.member.contact }}</td>
+                            <td>{{ reservation.member.email }}</td>
                             <td>{{ reservation.book.title }}</td>
                             <td>{{ reservation.book.author }}</td>
                             <td>{{ reservation.reservation_date }}</td>
@@ -32,11 +40,8 @@
                                 </span>
                             </td>
                             <td>
-                                {% if reservation.status == 'pending' and reservation.book.availability > 0 %}
-                                    <a href="{% url 'fulfill_reservation' reservation.reservation_id %}" class="btn btn-sm btn-primary">Borrow Now</a>
-                                {% endif %}
                                 {% if reservation.status == 'pending' %}
-                                 <a href="{% url 'cancel_reservation' reservation.reservation_id %}" class="btn btn-sm btn-primary">Cancel</a>
+                                    <a href="{% url 'manage_cancel_reservation' reservation.reservation_id %}" class="btn btn-sm btn-primary">Cancel</a>
                                 {% endif %}
                             </td>
                         </tr>
@@ -46,7 +51,7 @@
         </div>
     {% else %}
         <div class="alert alert-info">
-            You haven't made any reservations yet.
+            No members made any reservations yet.
         </div>
     {% endif %}
 

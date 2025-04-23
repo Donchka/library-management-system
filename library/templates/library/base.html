@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Library Management System{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% load static %}
     <style>
         .navbar-brand {
             font-weight: bold;
@@ -16,6 +17,25 @@
             margin-top: 50px;
             padding: 20px;
             background-color: #f8f9fa;
+        }
+        body {
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        body::before{
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("{% static 'library/images/library_bg.jpg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.3;
+            z-index: -1;
         }
     </style>
 </head>
@@ -31,19 +51,34 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'book_list' %}">Books</a>
                     </li>
-                    {% if request.session.is_authenticated %}
+                    {% if request.session.is_authenticated and not request.session.is_staff %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'my_loans' %}">My Loans</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'my_reservations' %}">My Reservations</a>
                         </li>
+                    {% elif request.session.is_authenticated%}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'manage_loans' %}">Manage Loans</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'manage_reservations' %}">Manage Reservations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'manage_members' %}">Manage Members</a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.is_authenticated and request.session.is_admin %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'manage_staff' %}">Manage Staffs</a>
+                        </li>
                     {% endif %}
                 </ul>
                 <ul class="navbar-nav">
                     {% if request.session.is_authenticated %}
                         <li class="nav-item">
-                            <span class="nav-link">Welcome, {{ user.username }}</span>
+                            <span class="nav-link">Welcome, {{ request.session.user_name }}</span>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
@@ -63,13 +98,15 @@
 
     <div class="container content-wrapper">
         {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
+              <div class="container mt-3">
+                {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                     {{ message }}
-                </div>
-            {% endfor %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              </div>
         {% endif %}
-
         {% block content %}
         {% endblock %}
     </div>

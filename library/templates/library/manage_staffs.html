@@ -1,0 +1,95 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Manage staffs - Library Management System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Manage Staffs</h2>
+
+    {% if staffs %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Staff ID</th>
+                        <th>Staff Name</th>
+                        <th>Staff Contact</th>
+                        <th>Staff Email</th>
+                        <th>Staff Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for staff in staffs %}
+                        <tr>
+                            <td>{{ staff.staff_id }}</td>
+                            <td>{{ staff.first_name|add:" " |add:staff.last_name }}</td>
+                            <td>{{ staff.contact }}</td>
+                            <td>{{ staff.email }}</td>
+                            <td>{{ staff.role }}</td>
+                            <td>
+                                <a href="{% url 'resign_staff' staff.staff_id %}" class="btn btn-sm btn-primary">Resign</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            No staff member yet.
+        </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStaffModal">
+                Register New Staff
+        </button>
+        <div class="modal fade" id="addStaffModal" tabindex="-1" aria-labelledby="addStaffModalLabel">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addStaffModalLabel">Register Staff</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form method="POST" action="{% url 'register_staff' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="staffFirstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="staffFirstName" name="staffFirstName" required>
+                    </div>
+                     <div class="mb-3">
+                        <label for="staffLastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="staffLastName" name="staffLastName" required>
+                    </div>
+                     <div class="mb-3">
+                        <label for="staffPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="staffPassword" name="staffPassword" required>
+                    </div>
+                     <div class="mb-3">
+                        <label for="staffRole" class="form-label">Role</label>
+                        <select name="staffRole" id="staffRole">
+                            <option value="Administrator" > Administrator</option>
+                            <option value="Librarian" selected> Librarian </option>
+                        </select>
+                    </div>
+                     <div class="mb-3">
+                        <label for="staffContact" class="form-label">Contact</label>
+                        <input type="text" class="form-control" id="staffContact" name="staffContact" required>
+                    </div>
+                     <div class="mb-3">
+                        <label for="staffEmail" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="staffEmail" name="staffEmail" required>
+                    </div>
+                     <div class="modal-footer">
+                         <button type="submit" class="btn btn-primary">Register staff</button>
+                     </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

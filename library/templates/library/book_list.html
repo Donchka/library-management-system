@@ -13,6 +13,59 @@
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
         </div>
+        {% if request.session.is_authenticated and request.session.is_staff %}
+        <div class="col-md-6">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">
+                Add New Book
+            </button>
+            <div class="modal fade" id="addBookModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addBookModalLabel">Add New Book</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" >
+                             <form method="POST" action="{% url 'add_book' %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="newTitle" class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="newTitle" name="newTitle" required>
+                                </div>
+                                 <div class="mb-3">
+                                    <label for="newAuthor" class="form-label">Author</label>
+                                    <input type="text" class="form-control" id="newAuthor" name="newAuthor" required>
+                                </div>
+                                 <div class="mb-3">
+                                    <label for="newPublisher" class="form-label">Publisher</label>
+                                    <input type="text" class="form-control" id="newPublisher" name="newPublisher">
+                                </div>
+                                 <div class="mb-3">
+                                    <label for="newYear" class="form-label">Year of Publish</label>
+                                    <input type="text" class="form-control" id="newYear" name="newYear">
+                                </div>
+                                 <div class="mb-3">
+                                    <label for="newISBN" class="form-label">ISBN</label>
+                                    <input type="text" class="form-control" id="newISBN" name="newISBN" minlength="13" maxlength="13" required>
+                                </div>
+                                 <div class="mb-3">
+                                    <label for="newGenre" class="form-label">Genre</label>
+                                    <input type="text" class="form-control" id="newGenre" name="newGenre" required>
+                                </div>
+                                 <div class="mb-3">
+                                    <label for="newAvailable" class="form-label">Available</label>
+                                    <input type="number" class="form-control" id="newAvailable" name="newAvailable" min="0" required>
+                                </div>
+                                 <div class="modal-footer">
+                                     <button type="submit" class="btn btn-primary">Add Book</button>
+                                 </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 
     <div class="row">
@@ -32,7 +85,75 @@
                             </small>
                         </p>
                         <div class="mt-3">
-                            {% if request.session.is_authenticated %}
+                            {% if request.session.is_authenticated and request.session.is_staff %}
+<!--                                <a href="{% url 'borrow_book' book.book_id %}" class="btn btn-success">Manage Inventory</a>-->
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bookManageModal{{ book.book_id }}">
+                                Manage Inventory
+                            </button>
+                            <div class="modal fade" id="bookManageModal{{ book.book_id }}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="bookManageModalLabel{{ book.book_id }}">Modify Inventory Detail</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form method="POST" action="{% url 'edit_book' book.book_id %}">
+                                                <div class="modal-body" >
+                                                    {% csrf_token %}
+                                                    <div class="mb-3">
+                                                        <label for="editTitle" class="form-label">Title</label>
+                                                        <input type="text" class="form-control" id="editTitle" name="editTitle" value="{{ book.title }}" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editAuthor" class="form-label">Author</label>
+                                                        <input type="text" class="form-control" id="editAuthor" name="editAuthor" value="{{ book.author }}" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editPublisher" class="form-label">Publisher</label>
+                                                        <input type="text" class="form-control" id="editPublisher" name="editPublisher" value="{{ book.publisher }}" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editYear" class="form-label">Year of Publish</label>
+                                                        <input type="text" class="form-control" id="editYear" name="editYear" value="{{ book.year }}" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editISBN" class="form-label">ISBN</label>
+                                                        <input type="text" class="form-control" id="editISBN" name="editISBN" value="{{ book.isbn }}" minlength="13" maxlength="13" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editGenre" class="form-label">Genre</label>
+                                                        <input type="text" class="form-control" id="editGenre" name="editGenre" value="{{ book.genre }}" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editAvailable" class="form-label">Available</label>
+                                                        <input type="number" class="form-control" id="editAvailable" name="editAvailable" value="{{ book.availability }}" min="0" required>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-success">Save changes</button>
+                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#bookRemoveModal{{ book.book_id }}">Remove book</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="modal fade" id="bookRemoveModal{{ book.book_id }}" tabindex="-1" aria-labelledby="bookRemoveModal{{ book.book_id }}">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="bookRemoveModalLabel{{ book.book_id }}">Confirm Deletion</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    By deleting this book, all pending reservations will also be cancelled! Confirm?
+                                  </div>
+                                  <div class="modal-footer">
+                                    <a href="{% url 'delete_book' book.book_id %}" class="btn btn-danger">Confirm</a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            {% elif request.session.is_authenticated %}
                                 {% if book.availability > 0 %}
                                     <a href="{% url 'borrow_book' book.book_id %}" class="btn btn-success">Borrow</a>
                                 {% else %}

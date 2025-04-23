@@ -24,6 +24,10 @@
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Login</button>
                         </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="staffCheckbox" name="staffLogin">
+                        <label class="form-check-label" for="staffCheckbox">Login as Librarian/Administrator</label>
+                        </div>
                     </form>
                     <div class="text-center mt-3">
                         <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
@@ -33,4 +37,28 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="loginFailedModal" tabindex="-1" aria-labelledby="loginFailedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="loginFailedLabel">Login Failed</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Incorrect email or password. Please try again.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Okay</button>
+                </div>
+            </div>
+        </div>
+</div>
+{% if login_failed %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginFailedModal = new bootstrap.Modal(document.getElementById('loginFailedModal'));
+            loginFailedModal.show();
+        });
+    </script>
+{% endif %}
 {% endblock %} 
