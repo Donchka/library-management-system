@@ -16,3 +16,6 @@ db.sqlite3
 
 # Virtual environment
 venv/
+
+# Pycharm
+.idea/
